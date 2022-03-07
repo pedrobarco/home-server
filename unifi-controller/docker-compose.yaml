@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  unifi-controller:
+    container_name: unifi-controller
+    image: linuxserver/unifi-controller
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MEM_LIMIT=1024M
+      - UMASK_SET=022
+    volumes:
+      - ./config/unifi-controller:/config
+    ports:
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 8443:8443
+      - 1900:1900/udp
+      - 8843:8843
+      - 8880:8880
+      - 6789:6789
+      - 5514:5514
+    restart: unless-stopped
