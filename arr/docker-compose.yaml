@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:v0.16.571-ls4
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/Downloads/blackhole:/downloads
+      - ./config/jackett:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/sonarr:/config
+      - ${ROOT}/Library/tv:/tv
+      - ${ROOT}/Downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  radarr:
+    container_name: radarr
+    image: linuxserver/radarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/radarr:/config
+      - ${ROOT}/Library/movies:/movies
+      - ${ROOT}/Downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK_SET=022
+    volumes:
+      - ./config/bazarr:/config
+      - ${ROOT}/Library/movies:/movies
+      - ${ROOT}/Library/tv:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
