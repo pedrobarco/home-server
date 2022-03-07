@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 68:68/tcp
+      - 68:68/udp
+      - 3000:3000/tcp
+      - 8082:80
+      - 8083:443
+    volumes:
+      - ./config/adguardhome:/opt/adguardhome/conf
+      - ./data/adguardhome:/opt/adguardhome/work
