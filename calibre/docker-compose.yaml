@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  calibre:
+    image: ghcr.io/linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/Library/books:/app/downloads
+      - ./config/calibre:/config
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: unless-stopped
+
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/calibre-web:calibre
+    volumes:
+      - ./config/calibre-web:/config
+      - ./config/calibre/Calibre Library:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
